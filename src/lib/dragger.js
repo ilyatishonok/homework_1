@@ -109,7 +109,7 @@ const Dragger = (function() {
         }
     }
 
-    const findDraggable = (event) => {
+    const findDraggable = event => {
         let element = event.target;
 
         while (
@@ -122,7 +122,7 @@ const Dragger = (function() {
         return element === document ? null : element;
     }
 
-    const findDroppable = (event) => {
+    const findDroppable = event => {
         const { _draggable } = draggableElement;
         const currentDisplayState = _draggable.avatar.style.display;
 

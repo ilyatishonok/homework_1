@@ -10,13 +10,13 @@ const droppable = new Droppable(canvas, {
     onDragEnd: (draggableElement, mouseDownCoords, event) => {
         canvas.parentNode.style.border = null;
         canvas.parentNode.style.boxShadow = null;
-
+        
         let newCanvasObject;
         const rect = canvas.getBoundingClientRect();
         if (draggableElement.classList.contains('circle')) {
             newCanvasObject = new Circle(
-                event.clientX - rect.left,
-                event.clientY - rect.top,
+                (event.clientX - rect.left) + (draggableElement.clientHeight/2 - mouseDownCoords.offsetX),
+                (event.clientY - rect.top) + (draggableElement.clientHeight/2 - mouseDownCoords.offsetY),
                 window.getComputedStyle(draggableElement, null).getPropertyValue('background-color'),
                 draggableElement.clientHeight / 2,
             );
