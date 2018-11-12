@@ -1,18 +1,22 @@
-const dragManager = (function() {
+const Dragger = (function() {
     let draggableElement;
     let droppableElement;
-    const mouseDownCoords = {};
+    let mouseDownCoords = {};
 
     const onMouseDown = event => {
         if (event.which != 1) {
             return false;
         }
+        
+        mouseDownCoords = {};
 
         draggableElement = findDraggable(event);
-    
+
         if (draggableElement) {
             mouseDownCoords.x = event.pageX;
             mouseDownCoords.y = event.pageY;
+            mouseDownCoords.offsetX = event.offsetX;
+            mouseDownCoords.offsetY = event.offsetY;
 
             document.addEventListener('mousemove', onMouseMove, true);
             document.addEventListener('mouseup', onMouseUp, true);
@@ -41,9 +45,9 @@ const dragManager = (function() {
                 return false;
             }
         }
-
+    
         draggableElement._draggable.onDragMove(event);
-
+        
         const newDroppableElement = findDroppable(event);
 
         if (newDroppableElement != droppableElement) {
@@ -70,34 +74,39 @@ const dragManager = (function() {
     const clearAllData = () => {
         draggableElement = droppableElement = null;
 
-        mouseDownCoords.x = null;
-        mouseDownCoords.y = null;
+        mouseDownCoords = null;
 
         document.removeEventListener('mousemove', onMouseMove, true);
         document.removeEventListener('mouseup', onMouseUp, true);
     }
 
     const onMouseUp = event => {
-        if (event.which != 1) {
-            clearAllData();
+        const currentMouseDownCoords = mouseDownCoords;
+        const currentDraggableElement = draggableElement;
+        const currentDroppableElement = droppableElement;
 
+        clearAllData();
+
+        if (event.which != 1) {
             return false;
         }
 
         if (
-            draggableElement &&
-            draggableElement._draggable &&
-            draggableElement._draggable.avatar
+            currentDraggableElement &&
+            currentDraggableElement._draggable &&
+            currentDraggableElement._draggable.avatar
         ) {
-            if (droppableElement) {
-                droppableElement._droppable.onDragEnd(draggableElement, event);
-                draggableElement._draggable.onDragEnd(droppableElement, event);
+            if (currentDroppableElement) {
+                currentDraggableElement._draggable.onDragEnd(currentDroppableElement, event);
+                currentDroppableElement._droppable.onDragEnd(
+                    currentDraggableElement,
+                    currentMouseDownCoords,
+                    event
+                );
             } else {
-                draggableElement._draggable.onDragCancel(event);
+                currentDraggableElement._draggable.onDragCancel(event);
             }
         }
-
-        clearAllData();
     }
 
     const findDraggable = (event) => {
@@ -115,16 +124,24 @@ const dragManager = (function() {
 
     const findDroppable = (event) => {
         const { _draggable } = draggableElement;
+        const currentDisplayState = _draggable.avatar.style.display;
 
         _draggable.avatar.style.display = 'none';
-        const target = document.elementFromPoint(event.clientX, event.clientY);
-        _draggable.avatar.style.display = 'block';
+        let target = document.elementFromPoint(event.pageX, event.pageY);
+        _draggable.avatar.style.display = currentDisplayState;
 
-        if (target) {
-            return target.closest('.droppable');
+        if (!target) {
+            return null;
         }
 
-        return null;
+        while (
+            target != document &&
+            !target._droppable
+        ) {
+            target = target.parentNode;
+        }
+
+        return target === document ? null : target;
     }
 
     document.addEventListener('mousedown', onMouseDown, true);

@@ -17,7 +17,7 @@ Draggable.prototype.onDragStart = function(mouseDownCoords, event) {
 
     this.options.onDragStart && this.options.onDragStart(this.mouseDownCoords, event);
     this.mouseDownCoords = mouseDownCoords;
-    this.coords = this._element.getBoundingClientRect();
+    this.elementCoords = this._element.getBoundingClientRect();
 }
 
 Draggable.prototype.createAvatar = function() {
@@ -37,8 +37,8 @@ Draggable.prototype.onDragEnd = function(droppableElement, event) {
 }
 
 Draggable.prototype.onDragMove = function(event) {
-    this.avatar.style.left = `${event.pageX - (this.mouseDownCoords.x - this.coords.left)}px`;
-    this.avatar.style.top = `${event.pageY - (this.mouseDownCoords.y - this.coords.top)}px`;
+    this.avatar.style.left = `${event.pageX - (this.mouseDownCoords.x - this.elementCoords.left)}px`;
+    this.avatar.style.top = `${event.pageY - (this.mouseDownCoords.y - this.elementCoords.top)}px`;
 
     if (this.options.onDragMove) {
         this.options.onDragMove(this.avatar, event);
@@ -46,12 +46,12 @@ Draggable.prototype.onDragMove = function(event) {
 }
 
 Draggable.prototype.onDragCancel = function(event) {
-    this.avatar.style.left = this.coords.left;
-    this.avatar.style.top = this.coords.top;
+    this.avatar.style.left = this.elementCoords.left;
+    this.avatar.style.top = this.elementCoords.top;
 
     this.options.onDragCancel && this.options.onDragCancel(this._element, this.avatar, event);
 
-    if (this.options.avatar != element) {
+    if (this.options.avatar != this._element) {
         this.destroyAvatar();
     }
 

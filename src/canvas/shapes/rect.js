@@ -1,17 +1,17 @@
-function Rect(x, y, width, height) {
-    this.x = x;
-    this.y = y;
+function Rect(x, y, color, width, height) {
+    Shape.apply(this, arguments);
+
     this.width = width;
     this.height = height;
 }
 
-Rect.prototype.draw = function (ctx) {
-    ctx && ctx.fillRect(this.x, this.y, this.width, this.height);
-}
+Rect.prototype = Object.create(Shape.prototype);
 
-Rect.prototype.move = function (x, y) {
-    this.x = x;
-    this.y = y;
+Rect.prototype.draw = function(ctx) {
+    ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+    ctx.strokeRect(this.x, this.y, this.width, this.height)
 }
 
 Rect.prototype.isUnderCursor = function(x, y) {

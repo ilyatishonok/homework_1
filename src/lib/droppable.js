@@ -3,7 +3,6 @@ const Droppable = (function() {
         this._element = element;
         this.options = options;
         element._droppable = this;
-        element.classList.add('droppable');
     }
 
     Droppable.prototype.onDragMove = function(draggableObject, event) {
@@ -26,8 +25,8 @@ const Droppable = (function() {
         );
     }
 
-    Droppable.prototype.onDragEnd = function(draggableElement, event) {
-        this.options.onDragEnd && this.options.onDragEnd(draggableElement, event);
+    Droppable.prototype.onDragEnd = function(draggableElement, mouseDownCoords, event) {
+        this.options.onDragEnd && this.options.onDragEnd(draggableElement, mouseDownCoords, event);
     }
 
     return Droppable;

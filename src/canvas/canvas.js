@@ -1,20 +1,28 @@
 const canvasHandler = (function() { 
-    const canvasWrapperElement = document.querySelector('.canvas-wrapper');
     const canvas = document.querySelector('#canvas');
     const ctx = canvas.getContext('2d');
     const canvasObjects = [];
 
     let selectedCanvasObject;
 
-    canvas.width = canvasWrapperElement.clientWidth;
-    canvas.height = canvasWrapperElement.clientHeight;
-    ctx.strokeStyle = '#001EFF';
-    ctx.fillStyle = '#985D5D';
-    ctx.lineWidth = 3;
+    canvas.width = canvas.parentNode.clientWidth;
+    canvas.height = canvas.parentNode.clientHeight;
+    ctx.strokeStyle = 'black';
+    ctx.fillStyle = 'red';
+    ctx.lineWidth = 1;
+
+    const redraw = () => {
+        canvasObjects.forEach(canvasObject => {
+            canvasObject.draw(ctx);
+        });  
+    }
 
     canvas.addEventListener('mousemove', event => {
         if (selectedCanvasObject) {
-            selectedCanvasObject.move(event.offsetX, event.offsetY);
+            selectedCanvasObject.move(
+                event.offsetX,
+                event.offsetY
+            );
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -52,9 +60,16 @@ const canvasHandler = (function() {
         });
 
         if (selectedCanvasObject) {
+            selectedCanvasObject.setMouseDownOffset(mouseX, mouseY);
             canvasObjects.splice(canvasObjects.indexOf(selectedCanvasObject), 1);
             canvasObjects.push(selectedCanvasObject);
         }
+    });
+
+    window.addEventListener('resize', () => {
+        canvas.height = canvas.parentNode.clientHeight;
+        canvas.width = canvas.parentNode.clientWidth;
+        redraw();
     });
 
     return {

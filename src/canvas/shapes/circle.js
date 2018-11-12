@@ -1,21 +1,18 @@
-function Circle(x, y, radius) {
-    this.x = x;
-    this.y = y;
+function Circle(x, y, color, radius) {
+    Shape.apply(this, arguments);
+
     this.radius = radius;
+    this.color = color;
 }
+
+Circle.prototype = Object.create(Shape.prototype);
 
 Circle.prototype.draw = function(ctx) {
     ctx.beginPath();
     ctx && ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-    ctx.fillStyle = 'purple';
+    ctx.fillStyle = this.color;
     ctx.fill();
-    ctx.lineWidth = 1;
     ctx.stroke();
-}
-
-Circle.prototype.move = function(x, y) {
-    this.x = x;
-    this.y = y;
 }
 
 Circle.prototype.isUnderCursor = function(x, y) {

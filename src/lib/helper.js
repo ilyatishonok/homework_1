@@ -11,8 +11,8 @@ const helper = (function() {
     }
 
     const onDragEnd = element => {
-        element.style.background = 'red';
-        element.style.border = '';
+        element.style.background = null;
+        element.style.border = null;
     }
 
     const createDefaultOptions = element => ({
