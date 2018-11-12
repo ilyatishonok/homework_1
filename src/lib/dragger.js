@@ -19,8 +19,8 @@ const dragManager = (function() {
         }
     }
 
-    const onMouseMove = (event) => {
-        if (!draggableElement && !draggableElement._draggable) {
+    const onMouseMove = event => {
+        if (!draggableElement || !draggableElement._draggable) {
             clearAllData();
 
             return false;
@@ -91,9 +91,9 @@ const dragManager = (function() {
         ) {
             if (droppableElement) {
                 droppableElement._droppable.onDragEnd(draggableElement, event);
-                draggableElement._droppable.onDragEnd(droppableElement, event);
+                draggableElement._draggable.onDragEnd(droppableElement, event);
             } else {
-                draggableElement.draggableObject.onDragCancel(event);
+                draggableElement._draggable.onDragCancel(event);
             }
         }
 
@@ -105,7 +105,7 @@ const dragManager = (function() {
 
         while (
             element != document &&
-            !element.draggableObject
+            !element._draggable
         ) {
             element = element.parentNode;
         }

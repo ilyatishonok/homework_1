@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>Canvas DnD</title>
+        <link rel="stylesheet" type="text/css" href="./src/styles.css">
+    </head>
+    <body>
+        <div class="layout" style="position: relative">
+                <div class="figures-bar" draggable="false">
+                        <div draggable="false" class="circle"></div>
+                        <div draggable="false" class="rect"></div>
+                </div>
+                <div class="canvas-area">
+                    <h1>Canvas</h1>
+                    <div class="canvas-wrapper">
+                        <canvas height="250px" width="250px" style="margin: 0;padding: 0" id="canvas"></canvas>
+                    </div>
+                </div>
+        </div>
+        <script src="./src/lib/helper.js"></script>
+        <script src="./src/lib/dragger.js"></script>
+        <script src="./src/lib/draggable.js"></script>
+        <script src="./src/lib/droppable.js"></script>
+        <script src="./src/canvas/shapes/circle.js"></script>
+        <script src="./src/canvas/shapes/rect.js"></script>
+        <script src="./src/canvas/canvas.js"></script>
+        <script src="./src/index.js"></script>
+    </body>
+</html>

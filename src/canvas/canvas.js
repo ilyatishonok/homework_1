@@ -24,11 +24,11 @@ const canvasHandler = (function() {
         }
     });
 
-    canvas.addEventListener('mouseleave', event => {
+    canvas.addEventListener('mouseleave', () => {
         selectedCanvasObject = null;
     })
 
-    canvas.addEventListener('mouseup', event => {
+    canvas.addEventListener('mouseup', () => {
         selectedCanvasObject = null;
     });
 
