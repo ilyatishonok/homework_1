@@ -22,7 +22,7 @@ html, body {
     height: 50px;
     width: 50px;
     user-select: none;
-    background-color: red;
+    background-color: green;
 }
 
 .layout {

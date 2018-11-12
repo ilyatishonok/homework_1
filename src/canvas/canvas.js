@@ -12,6 +12,8 @@ const canvasHandler = (function() {
     ctx.lineWidth = 1;
 
     const redraw = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
         canvasObjects.forEach(canvasObject => {
             const isSelected = selectedCanvasObject === canvasObject;
 
@@ -25,8 +27,6 @@ const canvasHandler = (function() {
                 event.offsetX,
                 event.offsetY
             );
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             redraw();
         }

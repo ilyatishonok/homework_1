@@ -9,7 +9,7 @@ const Dragger = (function() {
             return false;
         }
 
-        draggableElement = findDraggable(event);
+        draggableElement = helper.findDraggable(event);
         
         if (draggableElement && draggableElement.avatar) {
             return;
@@ -18,7 +18,7 @@ const Dragger = (function() {
         if (draggableElement) {
             mouseDownCoords.x = event.pageX;
             mouseDownCoords.y = event.pageY;
-            
+
             draggableElement._draggable.setOffset({
                 x: event.offsetX,
                 y: event.offsetY,
@@ -54,7 +54,7 @@ const Dragger = (function() {
     
         draggableElement._draggable.onDragMove(event);
         
-        const newDroppableElement = findDroppable(event);
+        const newDroppableElement = helper.findDroppable(event);
 
         if (newDroppableElement != droppableElement) {
             droppableElement && droppableElement._droppable.onDragLeave(
@@ -112,41 +112,6 @@ const Dragger = (function() {
                 currentDraggableElement._draggable.onDragCancel(event);
             }
         }
-    }
-
-    const findDraggable = event => {
-        let element = event.target;
-
-        while (
-            element != document &&
-            !element._draggable
-        ) {
-            element = element.parentNode;
-        }
-
-        return element === document ? null : element;
-    }
-
-    const findDroppable = event => {
-        const { _draggable } = draggableElement;
-        const currentDisplayState = _draggable.avatar.style.display;
-
-        _draggable.avatar.style.display = 'none';
-        let target = document.elementFromPoint(event.pageX, event.pageY);
-        _draggable.avatar.style.display = currentDisplayState;
-
-        if (!target) {
-            return null;
-        }
-
-        while (
-            target != document &&
-            !target._droppable
-        ) {
-            target = target.parentNode;
-        }
-
-        return target === document ? null : target;
     }
 
     document.addEventListener('mousedown', onMouseDown, true);
