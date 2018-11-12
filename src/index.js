@@ -7,26 +7,25 @@ const circle = new Draggable(circleElement, helper.createDefaultOptions(circleEl
 const rect = new Draggable(document.querySelector('.rect'), helper.createDefaultOptions(rectElement));
 
 const droppable = new Droppable(canvas, {
-    onDragEnd: (draggableElement, mouseDownCoords, event) => {
+    onDragEnd: (draggableElement, event) => {
         canvas.parentNode.style.border = null;
         canvas.parentNode.style.boxShadow = null;
-        
+
         let newCanvasObject;
         const rect = canvas.getBoundingClientRect();
         if (draggableElement.classList.contains('circle')) {
             newCanvasObject = new Circle(
-                (event.clientX - rect.left) + (draggableElement.clientHeight/2 - mouseDownCoords.offsetX),
-                (event.clientY - rect.top) + (draggableElement.clientHeight/2 - mouseDownCoords.offsetY),
+                event.offsetX + (draggableElement.clientHeight/2 - draggableElement._draggable.offset.x),
+                event.offsetY + (draggableElement.clientHeight/2 - draggableElement._draggable.offset.y),
                 window.getComputedStyle(draggableElement, null).getPropertyValue('background-color'),
                 draggableElement.clientHeight / 2,
             );
         } else if (draggableElement.classList.contains('rect')) {
             newCanvasObject = new Rect(
-                (event.clientX - rect.left) - mouseDownCoords.offsetX,
-                (event.clientY - rect.top) - mouseDownCoords.offsetY,
+                event.offsetX - draggableElement._draggable.offset.x,
+                event.offsetY - draggableElement._draggable.offset.y,
                 window.getComputedStyle(draggableElement, null).getPropertyValue('background-color'),
-                draggableElement.clientWidth,
-                draggableElement.clientHeight,
+                draggableElement.clientHeight
             );
         }
 

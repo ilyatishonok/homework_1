@@ -13,6 +13,10 @@ html, body {
     transition: none 0s ease 0s;
 }
 
+.figure-wrapper {
+    margin: 50px;
+}
+
 .rect {
     border: 1px solid black;
     height: 50px;

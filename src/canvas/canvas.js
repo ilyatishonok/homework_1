@@ -13,7 +13,9 @@ const canvasHandler = (function() {
 
     const redraw = () => {
         canvasObjects.forEach(canvasObject => {
-            canvasObject.draw(ctx);
+            const isSelected = selectedCanvasObject === canvasObject;
+
+            canvasObject.draw(ctx, isSelected);
         });  
     }
 
@@ -26,18 +28,20 @@ const canvasHandler = (function() {
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            canvasObjects.forEach(canvasObject => {
-                canvasObject.draw(ctx);
-            });
+            redraw();
         }
     });
 
     canvas.addEventListener('mouseleave', () => {
         selectedCanvasObject = null;
+
+        redraw();
     })
 
     canvas.addEventListener('mouseup', () => {
         selectedCanvasObject = null;
+
+        redraw();
     });
 
     canvas.addEventListener('mousedown', function(event) {
@@ -64,11 +68,14 @@ const canvasHandler = (function() {
             canvasObjects.splice(canvasObjects.indexOf(selectedCanvasObject), 1);
             canvasObjects.push(selectedCanvasObject);
         }
+
+        redraw();
     });
 
     window.addEventListener('resize', () => {
         canvas.height = canvas.parentNode.clientHeight;
         canvas.width = canvas.parentNode.clientWidth;
+
         redraw();
     });
 
